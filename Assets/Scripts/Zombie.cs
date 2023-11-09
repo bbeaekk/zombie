@@ -38,17 +38,31 @@ public class Zombie : LivingEntity
     }
 
     private void Awake() {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        zombieAnimator = GetComponent<Animator>();
+        zombieAudioPlayer = GetComponent<AudioSource>();
+
+        zombieRenderer = GetComponentInChildren<Renderer>();
         // 초기화
     }
 
     // 좀비 AI의 초기 스펙을 결정하는 셋업 메서드
     public void Setup(ZombieData zombieData) {
+        startingHealth = zombieData.health;
+        health = zombieData.health;
+
+        damage = zombieData.damage;
+
+        navMeshAgent.speed = zombieData.speed;
+
+        zombieRenderer.material.color = zombieData.skinColor;
         
     }
 
     private void Start() {
         // 게임 오브젝트 활성화와 동시에 AI의 추적 루틴 시작
         StartCoroutine(UpdatePath());
+
     }
 
     private void Update() {
